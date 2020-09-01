@@ -1,7 +1,7 @@
 from tkinter import *
 from PIL import ImageTk
-import Actor
-import Wall
+from . import Actor
+from . import Wall
 
 '''
 Main script. Without it
