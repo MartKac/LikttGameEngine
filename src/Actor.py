@@ -1,3 +1,5 @@
+from PIL import ImageTk
+
 
 class Actor:
     """
@@ -5,7 +7,7 @@ class Actor:
     in the scene
     """
 
-    def __init__(self, canvas, x, y, w, h, startimage=None, movementlist=None, movekeys=None, speed=1):
+    def __init__(self, canvas, x, y, w, h, startimage=None, movekeys=None, speed=1):
 
         self.speed = speed
 
@@ -22,29 +24,35 @@ class Actor:
         self.movekeys = movekeys
         self.box = None
 
-    def Render(self):
-        if self.startimage is not None:
-            """
-            If the image is specified,
-            make sprite with image.
-            """
+    def changeImage(self, imagepath):
+        self.box.config(image=ImageTk.PhotoImage(file=str(imagepath)))
 
-            img = self.startimage
-            self.box = self.canvas.create_image(self.x, self.y, image=img)
+    def render(self, transparent=False):
+        if not transparent:
+            if self.startimage is not None:
+                """
+                If the image is specified,
+                make sprite with image.
+                """
 
-        else:
-            '''
-            if image is not specified, then make
-            rectangle that is 10x10 and color it
-            red.
-            '''
+                img = self.startimage
+                self.box = self.canvas.create_image(self.x, self.y, image=img)
 
-            self.box = self.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill="red", outline="")
+            else:
+                '''
+                if image is not specified, then make
+                rectangle that is 10x10 and color it
+                red.
+                '''
 
-            self.w = 10
-            self.h = 10
+                self.box = self.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill="red", outline="")
 
-    def GetCoords(self):
+                self.w = 10
+                self.h = 10
+        if transparent:
+            self.box = self.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill="", outline="")
+
+    def getCoords(self):
         """
         Returns x and y argument of itselfs box
         """
@@ -58,7 +66,7 @@ class Actor:
         self.y = y
         return x, y
 
-    def Movement(self, keys, obstacles):
+    def movement(self, keys, obstacles):
         """
         Movement function will move the character
         and also change the animation state
@@ -66,28 +74,27 @@ class Actor:
 
         if self.movekeys != None:
             if self.movekeys["up"] in keys:
-                self.MoveIfPossible(0, -self.speed, obstacles)
+                self.moveIfPossible(0, -self.speed, obstacles)
 
             if self.movekeys["down"] in keys:
-                self.MoveIfPossible(0, self.speed, obstacles)
+                self.moveIfPossible(0, self.speed, obstacles)
 
             if self.movekeys["left"] in keys:
-                self.MoveIfPossible(-self.speed, 0, obstacles)
+                self.moveIfPossible(-self.speed, 0, obstacles)
 
             if self.movekeys["right"] in keys:
-                self.MoveIfPossible(self.speed, 0, obstacles)
+                self.moveIfPossible(self.speed, 0, obstacles)
 
-    def MoveIfPossible(self, dx, dy, obstacles):
+    def moveIfPossible(self, dx, dy, obstacles):
         """
         Move the spirit, if there are not any
         obstackes in the way
         ( self.Walls, other obstacles )
         """
 
-        print(self.WouldIntersectAny(dx, dy, obstacles))
-        if self.WouldIntersectAny(dx, dy, obstacles):
-            print("obstacle in the way")
-        if not self.WouldIntersectAny(dx, dy, obstacles):
+        if self.wouldIntersectAny(dx, dy, obstacles):
+            pass
+        if not self.wouldIntersectAny(dx, dy, obstacles):
             self.Move(dx, dy)
 
     def Move(self, x, y):
@@ -96,9 +103,9 @@ class Actor:
         """
 
         self.canvas.move(self.box, x, y)
-        self.x, self.y = self.GetCoords()
+        self.x, self.y = self.getCoords()
 
-    def MovementRender(self):
+    def movementRender(self):
         """
         This function takes state of
         movement animation (integer)
@@ -106,7 +113,7 @@ class Actor:
         """
         pass
 
-    def IntersectsX(self, b):
+    def intersectsX(self, b):
         """
         Chceks for intersection with
         another object on axis X
@@ -118,7 +125,7 @@ class Actor:
             return False
         return True
 
-    def IntersectsY(self, b):
+    def intersectsY(self, b):
         """
         Chceks for intersection with
         another object on axis Y
@@ -130,16 +137,16 @@ class Actor:
             return False
         return True
 
-    def Intersects(self, b):
+    def intersects(self, b):
         """
         Checks for intersection
         with another object on
         both x and y axis
         """
 
-        return self.IntersectsX(b) and self.IntersectsY(b)
+        return self.intersectsX(b) and self.intersectsY(b)
 
-    def WouldIntersect(self, dx, dy, b):
+    def wouldIntersect(self, dx, dy, b):
         """
         Checks if spirit would
         intersects with selected object
@@ -147,18 +154,18 @@ class Actor:
 
         self.x = self.x + dx
         self.y = self.y + dy
-        result = self.Intersects(b)
+        result = self.intersects(b)
         self.x = self.x - dx
         self.y = self.y - dy
         return result
 
-    def WouldIntersectAny(self, dx, dy, b):
+    def wouldIntersectAny(self, dx, dy, b):
         """
         Checks if spirit would
         intersects with any object
         """
 
         for obj in b:
-            if self.WouldIntersect(dx, dy, b[obj]):
+            if self.wouldIntersect(dx, dy, b[obj]):
                 return True
         return False
