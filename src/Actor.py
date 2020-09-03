@@ -7,7 +7,9 @@ class Actor:
     in the scene
     """
 
-    def __init__(self, canvas, x, y, w, h, startimage=None, movekeys=None, speed=1):
+    def __init__(self, canvas, x, y, w, h, startimage=None, movekeys=None, speed=1, imglist=None):
+        self.imglist = imglist
+        self.Animationstate = 0
 
         self.speed = speed
 
@@ -39,11 +41,11 @@ class Actor:
                 self.box = self.canvas.create_image(self.x, self.y, image=img)
 
             else:
-                '''
+                """"
                 if image is not specified, then make
                 rectangle that is 10x10 and color it
                 red.
-                '''
+                """
 
                 self.box = self.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill="red", outline="")
 
@@ -108,7 +110,8 @@ class Actor:
     def movementRender(self):
         """
         This function takes state of
-        movement animation (integer)
+        movement animation state
+        (integer)
         end changes image of the spirit
         """
         pass
