@@ -21,16 +21,16 @@ class Main:
 
         # create window and canvas if needed
 
-        if canvas == None and window == None:
+        if canvas is None and window is None:
             self.window = Tk()
-            if wh == None:
+            if wh is None:
                 self.canvas = Canvas(self.window)
             else:
                 self.canvas = Canvas(self.window, width=wh[0], height=wh[1])
         else:
             self.canvas = canvas
 
-        if title != None:
+        if title is not None:
             self.window.title(title)
         else:
             self.window.title("LTGE")
@@ -39,10 +39,10 @@ class Main:
 
         self.canvas.config(bg="black")
 
-        if bgcolor != None:
+        if bgcolor is not None:
             self.canvas.configure(bg=bgcolor)
 
-        if bgimg != None:
+        if bgimg is not None:
             # BG image
 
             bgimage = ImageTk.PhotoImage(file=bgimg)
@@ -82,13 +82,15 @@ class Main:
             self.iter = self.iter + 1
 
         for actor in self.Actors:
-            self.Actors[actor].movement(self.keys, self.Walls)
+            if self.Actors[actor].imglist is not None:
+                self.Actors[actor].changeMovementNum()
+                self.Actors[actor].movement(self.keys, self.Walls)
 
     def makePath(self):
-      """
+        """
       Function for creating a paths for objects to follow
       """
-      pass
+        pass
 
     def changeBgImage(self, bgimg):
         """
@@ -118,11 +120,11 @@ class Main:
         """
 
         if name not in self.Actors:
-            if movekeys != None:
+            if movekeys is not None:
                 self.Actors[name] = Actor.Actor(self.canvas, x, y, w, h, movekeys=movekeys, speed=speed)
                 self.Actors[name].render()
                 return 0
-            elif movekeys == None:
+            elif movekeys is not None:
                 self.Actors[name] = Actor.Actor(self.canvas, x, y, w, h, speed=speed)
                 self.Actors[name].render()
                 return 0
@@ -134,11 +136,11 @@ class Main:
         """
 
         if name not in self.Walls:
-            if movekeys != None:
+            if movekeys is not None:
                 self.Walls[name] = Wall.Wall(self.canvas, x, y, w, h, movekeys=movekeys)
                 self.Walls[name].render(transparent=transparent)
                 return 0
-            elif movekeys == None:
+            elif movekeys is not None:
                 self.Walls[name] = Wall.Wall(self.canvas, x, y, w, h)
                 self.Walls[name].render(transparent=transparent)
                 return 0
