@@ -16,3 +16,5 @@ open a file in your folder and import it this way:
 from LikttGameEngine.src import main
 
 Then you can start creating your game.
+
+### Will be added soon... in version 0.1.2
