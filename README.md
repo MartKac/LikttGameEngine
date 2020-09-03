@@ -10,7 +10,7 @@ Before you ask for help with use of LTGE, read the Usage part
 
 ## Usage
 
-To use LikttGameEngine, download LikttGameEngine.zip and unpack it in your script's folder.
+To use LikttGameEngine, download LikttGameEngine.zip and unpack it in your script's folder. Rename it to 'LikttGameEngine'
 open a file in your folder and import it this way:
 
 from LikttGameEngine.src import main
