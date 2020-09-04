@@ -15,6 +15,8 @@ class Main:
     def __init__(self, canvas=None, window=None, wh=None, bgcolor=None, bgimg=None, title=None):
         # Variables
 
+        self.bgimg = None
+
         self.iter = 0
 
         self.last_key = None
@@ -47,7 +49,11 @@ class Main:
 
             bgimage = ImageTk.PhotoImage(file=bgimg)
 
-            self.canvas.config(bg=bgimage)
+            self.canvas.config(bg="black")
+
+            self.Bgimg = self.canvas.create_image(wh[0]/2, wh[1]/2, image=bgimage)
+            
+            print(self.Bgimg)
 
         # Actors
 
@@ -66,13 +72,11 @@ class Main:
         self.window.bind("<KeyPress>", lambda e: self.keyDownDebounce(e))
         self.window.bind("<KeyRelease>", lambda e: self.keyUpDebounce(e))
 
-    def loop(self):
+    def loopSegment(self):
         """
-        main.loop() function will handle movement and
+        main.loopSegment() function will handle movement and
         will call the animations in Actor.py
         """
-
-        self.window.after(30, self.loop)
 
         # iter
 
@@ -84,7 +88,7 @@ class Main:
         for actor in self.Actors:
             if self.Actors[actor].imglist is not None:
                 self.Actors[actor].changeMovementNum()
-                self.Actors[actor].movement(self.keys, self.Walls)
+            self.Actors[actor].movement(self.keys, self.Walls)
 
     def makePath(self):
         """
@@ -206,7 +210,6 @@ class Main:
         self.last_key = e.keycode
 
     def keyUp(self, e):
-        has_prev_key_release = None
         if e.keycode in self.keys:
             del self.keys[e.keycode]
 
@@ -217,6 +220,5 @@ class Main:
         Starts windows mainloop and loop
         """
 
-        self.loop()
         self.canvas.grid()
         self.window.mainloop()

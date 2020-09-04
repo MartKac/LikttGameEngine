@@ -1,5 +1,5 @@
 from tkinter import *
-from .Actor import  *
+from .Actor import *
 
 
 class Wall(Actor):

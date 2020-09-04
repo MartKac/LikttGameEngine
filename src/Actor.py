@@ -7,11 +7,20 @@ class Actor:
     in the scene
     """
 
-    def __init__(self, canvas, x, y, w, h, startimage=None, movekeys=None, speed=1, imglist=None):
+    def __init__(self, canvas, x, y, w, h, startimage=None, movekeys=None, speed=1, shiftspeed=1, imglist=None):
+
+        # Animation
+
+
         self.imglist = imglist
         self.Animationstate = 0
+        self.lastdir = None
+
+        # Moving
 
         self.speed = speed
+
+        # Canvas and position
 
         self.canvas = canvas
 
@@ -77,15 +86,21 @@ class Actor:
         if self.movekeys != None:
             if self.movekeys["up"] in keys:
                 self.moveIfPossible(0, -self.speed, obstacles)
+                self.lastdir = "up"
 
             if self.movekeys["down"] in keys:
                 self.moveIfPossible(0, self.speed, obstacles)
+                self.lastdir = "down"
 
             if self.movekeys["left"] in keys:
                 self.moveIfPossible(-self.speed, 0, obstacles)
+                self.lastdir = "left"
 
             if self.movekeys["right"] in keys:
                 self.moveIfPossible(self.speed, 0, obstacles)
+                self.lastdir = "right"
+            else:
+                self.lastdir = None
 
     def moveIfPossible(self, dx, dy, obstacles):
         """
@@ -107,6 +122,13 @@ class Actor:
         self.canvas.move(self.box, x, y)
         self.x, self.y = self.getCoords()
 
+    def changeMovementNum(self):
+        if self.Animationstate != len(self.imglist):
+            self.Animationstate = self.Animationstate + 1
+        else:
+            self.Animationstate = 0
+
+
     def movementRender(self):
         """
         This function takes state of
@@ -114,7 +136,17 @@ class Actor:
         (integer)
         end changes image of the spirit
         """
-        pass
+        if self.imglist is not None:
+            if self.lastdir == "up":
+                self.changeImage(ImageTk.PhotoImage(file=self.imglist["up"][self.Animationstate]))
+            if self.lastdir == "down":
+                self.changeImage(ImageTk.PhotoImage(file=self.imglist["down"][self.Animationstate]))
+            if self.lastdir == "left":
+                self.changeImage(ImageTk.PhotoImage(file=self.imglist["left"][self.Animationstate]))
+            if self.lastdir == "right":
+                self.changeImage(ImageTk.PhotoImage(file=self.imglist["right"][self.Animationstate]))
+            else:
+                self.changeImage(ImageTk.PhotoImage(file=self.imglist["standing"]))
 
     def intersectsX(self, b):
         """

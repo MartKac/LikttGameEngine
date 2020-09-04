@@ -1,17 +1,27 @@
 from src import main
 
 
-class Main:
+class Game:
     def __init__(self):
-        self.m = main.Main(bgcolor="green", wh=(500, 500))
-        self.m.createActor("actor1", 10, 10, w=10, h=10,
-                           movekeys={"up": 25, "down": 39, "left": 38, "right": 40}, speed=5)
-        self.m.createWall("wall1", 50, 50, w=40, h=40)
-        self.m.createWallsAround()
+        self.main = main.Main(title="Test game", wh=(400, 400))
+        self.main.createActor("Actor1", 10, 10,
+                              movekeys={"up": 25, "down": 39, "left": 38, "right": 40, "shift": 50},
+                              speed=10
+                              )
+        self.main.createWallsAround()
+
+    def loop(self):
+        self.main.window.after(30, self.loop)
+
+        # loop in main
+
+        self.main.loopSegment()
 
     def start(self):
-        self.m.start()
+        self.loop()
+        self.main.start()
 
 
-a = Main()
-a.start()
+if __name__ == '__main__':
+    a = Game()
+    a.start()
