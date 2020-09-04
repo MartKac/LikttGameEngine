@@ -9,8 +9,9 @@ class Actor:
 
     def __init__(self, canvas, x, y, w, h, startimage=None, movekeys=None, speed=1, shiftspeed=1, imglist=None):
 
-        # Animation
+        print(shiftspeed)
 
+        # Animation
 
         self.imglist = imglist
         self.Animationstate = 0
@@ -35,8 +36,8 @@ class Actor:
         self.movekeys = movekeys
         self.box = None
 
-    def changeImage(self, imagepath):
-        self.box.config(image=ImageTk.PhotoImage(file=str(imagepath)))
+    def changeImage(self, img):
+        self.canvas.itemconfig(self.box, image=img)
 
     def render(self, transparent=False):
         if not transparent:
@@ -46,7 +47,7 @@ class Actor:
                 make sprite with image.
                 """
 
-                img = self.startimage
+                img = ImageTk.PhotoImage(file=self.startimage)
                 self.box = self.canvas.create_image(self.x, self.y, image=img)
 
             else:
@@ -56,7 +57,9 @@ class Actor:
                 red.
                 """
 
-                self.box = self.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill="red", outline="")
+                self.box = self.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill="red",
+                                                        outline=""
+                                                        )
 
                 self.w = 10
                 self.h = 10
@@ -65,7 +68,7 @@ class Actor:
 
     def getCoords(self):
         """
-        Returns x and y argument of itselfs box
+        Returns x and y argument of self.box
         """
 
         c = self.canvas.coords(self.box)
@@ -83,7 +86,7 @@ class Actor:
         and also change the animation state
         """
 
-        if self.movekeys != None:
+        if self.movekeys is not None:
             if self.movekeys["up"] in keys:
                 self.moveIfPossible(0, -self.speed, obstacles)
                 self.lastdir = "up"
@@ -105,7 +108,7 @@ class Actor:
     def moveIfPossible(self, dx, dy, obstacles):
         """
         Move the spirit, if there are not any
-        obstackes in the way
+        obstacles in the way
         ( self.Walls, other obstacles )
         """
 
@@ -128,7 +131,6 @@ class Actor:
         else:
             self.Animationstate = 0
 
-
     def movementRender(self):
         """
         This function takes state of
@@ -150,7 +152,7 @@ class Actor:
 
     def intersectsX(self, b):
         """
-        Chceks for intersection with
+        Checks for intersection with
         another object on axis X
         """
 
@@ -162,7 +164,7 @@ class Actor:
 
     def intersectsY(self, b):
         """
-        Chceks for intersection with
+        Checks for intersection with
         another object on axis Y
         """
 

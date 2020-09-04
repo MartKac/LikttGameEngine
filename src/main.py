@@ -12,7 +12,8 @@ has_prev_key_release = None
 
 
 class Main:
-    def __init__(self, canvas=None, window=None, wh=None, bgcolor=None, bgimg=None, title=None):
+    def __init__(self, canvas=None, window=None, wh=None, bgcolor=None, bgimg=None, title=None,
+                 resizablex=True, resizabley=True):
         # Variables
 
         self.bgimg = None
@@ -37,9 +38,10 @@ class Main:
         else:
             self.window.title("LTGE")
 
+        self.window.resizable(resizablex, resizabley)
+
         # BG color
 
-        self.canvas.config(bg="black")
 
         if bgcolor is not None:
             self.canvas.configure(bg=bgcolor)
@@ -47,13 +49,13 @@ class Main:
         if bgimg is not None:
             # BG image
 
-            bgimage = ImageTk.PhotoImage(file=bgimg)
-
             self.canvas.config(bg="black")
 
-            self.Bgimg = self.canvas.create_image(wh[0]/2, wh[1]/2, image=bgimage)
-            
-            print(self.Bgimg)
+            self.bgimage = ImageTk.PhotoImage(file=bgimg)
+
+
+
+            self.Bgimg = self.canvas.create_image(wh[0]/2, wh[1]/2, image=self.bgimage)
 
         # Actors
 
@@ -72,6 +74,7 @@ class Main:
         self.window.bind("<KeyPress>", lambda e: self.keyDownDebounce(e))
         self.window.bind("<KeyRelease>", lambda e: self.keyUpDebounce(e))
 
+
     def loopSegment(self):
         """
         main.loopSegment() function will handle movement and
@@ -88,6 +91,7 @@ class Main:
         for actor in self.Actors:
             if self.Actors[actor].imglist is not None:
                 self.Actors[actor].changeMovementNum()
+                self.Actors[actor].movementRender()
             self.Actors[actor].movement(self.keys, self.Walls)
 
     def makePath(self):
@@ -118,18 +122,18 @@ class Main:
 
         self.canvas.config(bg=bgcolor)
 
-    def createActor(self, name, x, y, movekeys=None, w=0, h=0, speed=1):
+    def createActor(self, name, x, y, movekeys=None, w=0, h=0, speed=1, imglist=None, startimage=None):
         """
         Create a fully working Actor ( spirit ) in the scene
         """
 
         if name not in self.Actors:
             if movekeys is not None:
-                self.Actors[name] = Actor.Actor(self.canvas, x, y, w, h, movekeys=movekeys, speed=speed)
+                self.Actors[name] = Actor.Actor(self.canvas, x, y, w, h, movekeys=movekeys, speed=speed, imglist=imglist, startimage=startimage)
                 self.Actors[name].render()
                 return 0
             elif movekeys is not None:
-                self.Actors[name] = Actor.Actor(self.canvas, x, y, w, h, speed=speed)
+                self.Actors[name] = Actor.Actor(self.canvas, x, y, w, h, speed=speed, imglist=imglist, startimage=startimage)
                 self.Actors[name].render()
                 return 0
         return 1
@@ -219,6 +223,5 @@ class Main:
         """
         Starts windows mainloop and loop
         """
-
         self.canvas.grid()
         self.window.mainloop()
