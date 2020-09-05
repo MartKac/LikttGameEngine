@@ -12,7 +12,7 @@ has_prev_key_release = None
 
 
 class Main:
-    def __init__(self, canvas=None, window=None, wh=None, bgcolor=None, bgimg=None, title=None,
+    def __init__(self, canvas=None, window=None, wh=(100, 100), bgcolor=None, bgimg=None, title=None,
                  resizablex=True, resizabley=True):
         # Variables
 
@@ -26,10 +26,8 @@ class Main:
 
         if canvas is None and window is None:
             self.window = Tk()
-            if wh is None:
-                self.canvas = Canvas(self.window)
-            else:
-                self.canvas = Canvas(self.window, width=wh[0], height=wh[1])
+
+            self.canvas = Canvas(self.window, width=wh[0], height=wh[1])
         else:
             self.canvas = canvas
 
@@ -42,7 +40,6 @@ class Main:
 
         # BG color
 
-
         if bgcolor is not None:
             self.canvas.configure(bg=bgcolor)
 
@@ -52,8 +49,6 @@ class Main:
             self.canvas.config(bg="black")
 
             self.bgimage = ImageTk.PhotoImage(file=bgimg)
-
-
 
             self.Bgimg = self.canvas.create_image(wh[0]/2, wh[1]/2, image=self.bgimage)
 
@@ -74,7 +69,6 @@ class Main:
         self.window.bind("<KeyPress>", lambda e: self.keyDownDebounce(e))
         self.window.bind("<KeyRelease>", lambda e: self.keyUpDebounce(e))
 
-
     def loopSegment(self):
         """
         main.loopSegment() function will handle movement and
@@ -90,8 +84,8 @@ class Main:
 
         for actor in self.Actors:
             if self.Actors[actor].imglist is not None:
-                self.Actors[actor].changeMovementNum()
-                self.Actors[actor].movementRender()
+                if self.iter % 10 is 0:
+                    self.Actors[actor].movementRender()
             self.Actors[actor].movement(self.keys, self.Walls)
 
     def makePath(self):
@@ -129,11 +123,13 @@ class Main:
 
         if name not in self.Actors:
             if movekeys is not None:
-                self.Actors[name] = Actor.Actor(self.canvas, x, y, w, h, movekeys=movekeys, speed=speed, imglist=imglist, startimage=startimage)
+                self.Actors[name] = Actor.Actor(self.canvas, x, y, w, h, movekeys=movekeys, speed=speed,
+                                                imglist=imglist, startimage=startimage)
                 self.Actors[name].render()
                 return 0
             elif movekeys is not None:
-                self.Actors[name] = Actor.Actor(self.canvas, x, y, w, h, speed=speed, imglist=imglist, startimage=startimage)
+                self.Actors[name] = Actor.Actor(self.canvas, x, y, w, h, speed=speed, imglist=imglist,
+                                                startimage=startimage)
                 self.Actors[name].render()
                 return 0
         return 1

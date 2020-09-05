@@ -8,7 +8,6 @@ class Wall(Actor):
 
     def render(self, transparent=False):
         if transparent:
-            print("aaa")
             self.box = self.canvas.create_rectangle(self.x, self.y, self.x + self.w, self.y + self.h, fill="",
                                                     outline="")
             return

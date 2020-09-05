@@ -37,6 +37,7 @@ class Actor:
         self.box = None
 
     def changeImage(self, img):
+        self.img = img
         self.canvas.itemconfig(self.box, image=img)
 
     def render(self, transparent=False):
@@ -48,6 +49,7 @@ class Actor:
                 """
 
                 img = ImageTk.PhotoImage(file=self.startimage)
+                self.img = img
                 self.box = self.canvas.create_image(self.x, self.y, image=img)
 
             else:
@@ -103,7 +105,8 @@ class Actor:
                 self.moveIfPossible(self.speed, 0, obstacles)
                 self.lastdir = "right"
             else:
-                self.lastdir = None
+                self.changeImage(ImageTk.PhotoImage(file=self.imglist["standing"]))
+
 
     def moveIfPossible(self, dx, dy, obstacles):
         """
@@ -126,7 +129,7 @@ class Actor:
         self.x, self.y = self.getCoords()
 
     def changeMovementNum(self):
-        if self.Animationstate != len(self.imglist):
+        if self.Animationstate != self.imglist["Num"]:
             self.Animationstate = self.Animationstate + 1
         else:
             self.Animationstate = 0
@@ -138,6 +141,7 @@ class Actor:
         (integer)
         end changes image of the spirit
         """
+
         if self.imglist is not None:
             if self.lastdir == "up":
                 self.changeImage(ImageTk.PhotoImage(file=self.imglist["up"][self.Animationstate]))
@@ -147,8 +151,9 @@ class Actor:
                 self.changeImage(ImageTk.PhotoImage(file=self.imglist["left"][self.Animationstate]))
             if self.lastdir == "right":
                 self.changeImage(ImageTk.PhotoImage(file=self.imglist["right"][self.Animationstate]))
-            else:
-                self.changeImage(ImageTk.PhotoImage(file=self.imglist["standing"]))
+
+        self.changeMovementNum()
+
 
     def intersectsX(self, b):
         """
