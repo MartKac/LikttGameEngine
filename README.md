@@ -10,6 +10,13 @@ Before you ask for help with use of LTGE, read the Usage part
 
 ## Usage
 
+Liktt Game Engine supports:
+
+*Walls
+*Actors
+*Images
+*Transparent objects
+
 To use LikttGameEngine, download LikttGameEngine.zip and unpack it in your script's folder. Rename it to 'LikttGameEngine'
 open a file in your folder and import it this way:
 ```python
@@ -59,7 +66,7 @@ main.createActor(name, x, y, movekeys={"up": 25, "down": 39, "left": 38, "right"
 ##### Moving by calling a function
 If you want to create bots, automatically moved enemies and others, you may need to use `moveActorWithConsideringWalls` or `moveActorWithoutConsideringWalls`.
 Example:
-```
+```python
 main = Main()
 
 name = "Actor1"
@@ -71,3 +78,21 @@ main.createActor(name, x, y)
 main.moveActorWithConsideringWalls(name, 10, 0)
 ```
 This will move the actor with name `Actor1` by 10 pixels.
+
+### Creating walls
+If you dont want the player to leave the canvas, or to not go outside some areas, then use Walls
+
+#### Creating walls around canvas
+To block user getting out of the canvas, we can use `createWallsAround`.
+```python
+main = Main()
+
+name = "Actor1"
+
+x = 50
+y = 50
+
+main.createActor(name, x, y)
+
+main.createWallsAround()
+```
