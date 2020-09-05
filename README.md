@@ -12,9 +12,16 @@ Before you ask for help with use of LTGE, read the Usage part
 
 To use LikttGameEngine, download LikttGameEngine.zip and unpack it in your script's folder. Rename it to 'LikttGameEngine'
 open a file in your folder and import it this way:
-
+```
 from LikttGameEngine.src import main
-
+```
 Then you can start creating your game.
 
-### Will be added soon... in version 0.1.2
+### Creating a Actor
+If you want to have a player or different entity in your scene, actor will create a spirit in your scene.
+###### Warning!
+Do not create actor by calling:
+```
+myactor = Actor()
+```
+Create it using
