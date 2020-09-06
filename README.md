@@ -122,7 +122,7 @@ wall_height = 40
 main.createWall(name_of_wall, wall_x , wall_y, w=wall_width, h=wall_height)
 ```
 If we dont specify the width and height argument, automatically it will be `10x10`. We can specify transparent by changing the line, where the wall is created:
-```
+```python
 main.createWall(name_of_wall, wall_x , wall_y, w=wall_width, h=wall_height, transparent=True)
 ```
 By deafult, the transparent option is set to `False`.
