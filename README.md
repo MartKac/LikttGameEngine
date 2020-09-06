@@ -77,7 +77,7 @@ y = 50
 main.createActor(name, x, y)
 main.moveActorWithConsideringWalls(name, 10, 0)
 ```
-This will move the actor with name `Actor1` by 10 pixels.
+This will move the actor with name `Actor1` by 10 pixels if there is not any wall.
 
 ### Creating walls
 If you dont want the player to leave the canvas, or to not go outside some areas, then use Walls
@@ -96,3 +96,33 @@ main.createActor(name, x, y)
 
 main.createWallsAround()
 ```
+
+#### Creating a classic wall
+
+In this example we will create a wall  at `x: 40`, `y: 40`, `width:40` and `height:40` in the canvas using `createWall`.
+```python
+
+main = Main()
+
+name_of_actor = "Actor1"
+
+actor_x = 50
+actor_y = 50
+
+main.createActor(name_of_actor, actor_x, actor_y)
+
+name_of_wall = "Wall1"
+
+wall_x = 40
+wall_y = 40
+
+wall_width = 40
+wall_height = 40
+
+main.createWall(name_of_wall, wall_x , wall_y, w=wall_width, h=wall_height)
+```
+If we dont specify the width and height argument, automatically it will be `10x10`. We can specify transparent by changing the line, where the wall is created:
+```
+main.createWall(name_of_wall, wall_x , wall_y, w=wall_width, h=wall_height, transparent=True)
+```
+By deafult, the transparent option is set to `False`.
