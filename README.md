@@ -1,6 +1,8 @@
 # LikttGameEngine (LTGE)
 A simple 2D game engine for Python-Tkinter
 
+#### Note: this engine is no longer maintained, and propably will not be. You are free to fork this repository in any way. 
+
 ## Contacts
 Be sure to ask for questions, contact me on mkac003@gmail.com
 It may take some time before i reply, i am sorry for that,
